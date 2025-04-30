@@ -1,18 +1,20 @@
 from telegram.ext import Updater, MessageHandler, Filters
-# esto es para forzar deploy
-
+from threading import Timer
 import os
-TOKEN = os.getenv("TOKEN")
 
+TOKEN = os.getenv("TOKEN")
 
 def bienvenida(update, context):
     for miembro in update.message.new_chat_members:
-        # Envía una imagen desde tu PC
-        context.bot.send_photo(
+        # Enviar la imagen de bienvenida
+        mensaje = context.bot.send_photo(
             chat_id=update.effective_chat.id,
-            photo=open('img.jpg', 'rb'),  # Cambiá por el nombre de tu imagen
+            photo=open('img.jpg', 'rb'),
             caption=f"¡Bienvenido {miembro.first_name}!\nA nuestra zoociedad 🎉\nsolo se permite zoo de mujeres \n❌si mandas otro contenido seras eliminado ojo."
         )
+
+        # Programar la eliminación del mensaje en 60 segundos
+        Timer(5, lambda: context.bot.delete_message(chat_id=mensaje.chat_id, message_id=mensaje.message_id)).start()
 
 def main():
     updater = Updater(TOKEN, use_context=True)
