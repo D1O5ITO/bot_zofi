@@ -14,7 +14,7 @@ def bienvenida(update, context):
         )
 
         # Programar la eliminación del mensaje en 60 segundos
-        Timer(5, lambda: context.bot.delete_message(chat_id=mensaje.chat_id, message_id=mensaje.message_id)).start()
+        Timer(60, lambda: context.bot.delete_message(chat_id=mensaje.chat_id, message_id=mensaje.message_id)).start()
 
 def main():
     updater = Updater(TOKEN, use_context=True)
